@@ -1,18 +1,19 @@
-
 <?php
-$mysqli = new mysqli('db', 'root', 'secret', 'web');
+require_once 'DataBaseService.php';
 
-if (mysqli_connect_errno()) {
-    printf("Подключение невозможно. Код ошибки: %s\n", mysqli_connect_error());
-    exit;
-}
-
-if ($result = $mysqli->query('SELECT * FROM test')) {
-    while ($row = $result->fetch_assoc()) {
-        printf("%s %s", $row['email'], $row['title']);
-        echo nl2br("\n");
-    }
-
-    $result->close();
-}
+$service = new DataBaseService();
+$posts = $service->getPosts();
 ?>
+
+<table>
+    <caption>Объявления</caption>
+    <?php foreach ($posts as $post): ?>
+        <tr>
+            <?php foreach ($post as $value): ?>
+                <td><?= htmlspecialchars($value) ?></td>
+            <?php endforeach; ?>
+        </tr>
+    <?php endforeach; ?>
+</table>
+</body>
+</html>
